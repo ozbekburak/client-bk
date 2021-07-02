@@ -8,13 +8,12 @@ import (
 )
 
 func main() {
-	fmt.Println("Hello from our http client")
+	fmt.Println("Burak Kaan HTTP Client")
 	Get("https://www.google.com")
 }
 
 func Get(url string) {
-	c := http.Client{
-		Timeout: time.Duration(1) * time.Second}
+	c := http.Client{Timeout: time.Duration(1) * time.Second}
 	response, err := c.Get(url)
 	if err != nil {
 		fmt.Printf("Error: %s", err)
