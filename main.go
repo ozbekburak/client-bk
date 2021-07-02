@@ -9,19 +9,29 @@ import (
 
 func main() {
 	fmt.Println("Burak Kaan HTTP Client")
-	Get("https://www.google.com")
+	c := http.Client{Timeout: time.Duration(1) * time.Second}
+	Get(&c, "https://api.github.com/")
 }
 
-func Get(url string) {
-	c := http.Client{Timeout: time.Duration(1) * time.Second}
-	response, err := c.Get(url)
+func Get(c *http.Client, url string) {
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		fmt.Printf("Error: %s", err)
+		return
 	}
-	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
+	req.Header.Add("Accept", `application/json`)
+	resp, err := c.Do(req)
 	if err != nil {
 		fmt.Printf("Error: %s", err)
+		return
 	}
-	fmt.Printf("Body: %s", body)
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Printf("error: %s", err)
+		return
+	}
+	fmt.Printf("Body : %s \n ", body)
+	fmt.Printf("Response status : %s \n", resp.Status)
 }
