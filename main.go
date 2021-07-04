@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -16,4 +18,11 @@ func Get(url string) {
 		fmt.Printf("Error: %s", err) // log kütüphanesini kullanmak daha doğru olabilir?
 	}
 
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil{
+		log.Fatalln(err)
+	}
+
+	sb := string(body)
+	fmt.Printf("String body: %s", sb)
 }
