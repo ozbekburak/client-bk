@@ -34,41 +34,42 @@ func Post(url string) {
 		"Erhan",
 		"Yakut",
 	}
+
 	data, _ := json.Marshal(myMentor)
 	requestBody := bytes.NewReader(data)
 
 	resp, err := http.Post(url, "application/json", requestBody)
 	if err != nil {
-		fmt.Printf("Error: %v", err)
+		fmt.Printf("Error: %v", err) // log kütüphanesini kullanmak daha doğru mu olur? (log.Fatalln)
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body) // byte döner (byte[]). bodyBytes daha iyi bir adlandırma mı olur?
 	if err != nil {
 		fmt.Printf("Error: %v", err)
 	}
 
-	fmt.Printf("\nResponse of POST request: %s", string(body))
+	// string(body) ayrı bir değişkene atamak overkill mi best practice mi?
+	fmt.Printf("\nResponse of POST request: %s\n", string(body))
 }
 
 func Get(url string) {
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Printf("Error: %s", err) // log kütüphanesini kullanmak daha doğru olabilir?
+		fmt.Printf("Error: %s", err)
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body) // byte döner. bodyBytes daha iyi bir adlandırma mı olur?
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Printf("Error: %s", err)
 	}
 
-	// string(body) ayrı bir değişkene atamak overkill mi best practice mi?
-	//fmt.Printf("Get request response body: %s", string(body))
-
-	var newPostData PostData
-	json.Unmarshal(body, &newPostData)
-	fmt.Printf("\nResponse of GET request:\n%+v\n", newPostData) // +v fieldları da yazıyor.
+	// struct olarak göstermek için unmarshal edip postdata'yı dolduruyoruz. Mantıklı mı? yoksa direkt string(body) mi
+	// kullanmak iyi olurdu?
+	var post PostData
+	json.Unmarshal(body, &post)
+	fmt.Printf("\nResponse of GET request:\n%+v\n", post) // +v fieldları da yazıyor.
 }
 
 func Put(url string){
@@ -83,7 +84,7 @@ func Put(url string){
 	data, _ := json.Marshal(postData)
 	requestBody := bytes.NewBuffer(data)
 
-	req, err := http.NewRequest(http.MethodPut, url, requestBody)
+	req, err := http.NewRequest(http.MethodPut, url, requestBody) // http.Put yok.
 	if err != nil {
 		fmt.Printf("Error: %s", err)
 	}
@@ -96,10 +97,9 @@ func Put(url string){
 
 	defer resp.Body.Close()
 
-	body, _ := ioutil.ReadAll(resp.Body) // body = byte[].
+	body, _ := ioutil.ReadAll(resp.Body)
 
-	// Convert to PostData struct, string olarak da yazdırabilirdik. string(body).
-	var newPostData PostData
-	json.Unmarshal(body, &newPostData)
-	fmt.Printf("\nResponse of PUT request::\n%+v\n", newPostData) // +v fieldları da yazıyor.
+	var post PostData
+	json.Unmarshal(body, &post)
+	fmt.Printf("\nResponse of PUT request:\n%+v\n", post)
 }
