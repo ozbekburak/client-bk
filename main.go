@@ -26,6 +26,7 @@ func main() {
 	Post("https://postman-echo.com/post")
 	Get("https://jsonplaceholder.typicode.com/posts/1")
 	Put("https://jsonplaceholder.typicode.com/posts/2")
+	Delete("https://jsonplaceholder.typicode.com/posts/3")
 }
 
 
@@ -102,4 +103,36 @@ func Put(url string){
 	var post PostData
 	json.Unmarshal(body, &post)
 	fmt.Printf("\nResponse of PUT request:\n%+v\n", post)
+}
+
+func Delete(url string)  {
+	postData := PostData{
+		5,
+		3,
+		"Delete the post with an id of 3",
+		"Goodbye, body.",
+	}
+
+	client := &http.Client{}
+	data, _ := json.Marshal(postData)
+	requestBody := bytes.NewBuffer(data)
+
+	req, err := http.NewRequest(http.MethodDelete, url, requestBody) // http.Put yok.
+	if err != nil {
+		fmt.Printf("Error: %s", err)
+	}
+	req.Header.Set("Content-Type", "application/json; charset=utf-8")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Printf("Error: %s", err)
+	}
+
+	defer resp.Body.Close()
+
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	var post PostData
+	json.Unmarshal(body, &post)
+	fmt.Printf("\nResponse of DELETE request:\n%+v\n", post)
 }
