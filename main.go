@@ -2,36 +2,18 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"net/http"
-	"time"
 )
 
 func main() {
 	fmt.Println("Burak Kaan HTTP Client")
-	c := http.Client{Timeout: time.Duration(1) * time.Second}
-	Get(&c, "https://api.github.com/")
+	Get("https://jsonplaceholder.typicode.com/posts/1")
 }
 
-func Get(c *http.Client, url string) {
-	req, err := http.NewRequest("GET", url, nil)
+func Get(url string) {
+	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Printf("Error: %s", err)
-		return
 	}
-	req.Header.Add("Accept", `application/json`)
-	resp, err := c.Do(req)
-	if err != nil {
-		fmt.Printf("Error: %s", err)
-		return
-	}
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Printf("error: %s", err)
-		return
-	}
-	fmt.Printf("Body : %s \n ", body)
-	fmt.Printf("Response status : %s \n", resp.Status)
+	fmt.Printf("Body: %s", resp.Body)
 }
