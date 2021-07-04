@@ -13,7 +13,7 @@ func main() {
 func Get(url string) {
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Printf("Error: %s", err)
+		fmt.Printf("Error: %s", err) // log kütüphanesini kullanmak daha doğru olabilir?
 	}
-	fmt.Printf("Body: %s", resp.Body)
+
 }
