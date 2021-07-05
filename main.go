@@ -29,7 +29,6 @@ func main() {
 	Delete("https://jsonplaceholder.typicode.com/posts/3")
 }
 
-
 func Post(url string) {
 	myMentor := Mentor{
 		"Erhan",
@@ -73,7 +72,7 @@ func Get(url string) {
 	fmt.Printf("\nResponse of GET request:\n%+v\n", post) // +v fieldları da yazıyor.
 }
 
-func Put(url string){
+func Put(url string) {
 	postData := PostData{
 		5,
 		2,
@@ -105,7 +104,7 @@ func Put(url string){
 	fmt.Printf("\nResponse of PUT request:\n%+v\n", post)
 }
 
-func Delete(url string)  {
+func Delete(url string) {
 	postData := PostData{
 		5,
 		3,
@@ -117,7 +116,7 @@ func Delete(url string)  {
 	data, _ := json.Marshal(postData)
 	requestBody := bytes.NewBuffer(data)
 
-	req, err := http.NewRequest(http.MethodDelete, url, requestBody) // http.Put yok.
+	req, err := http.NewRequest(http.MethodDelete, url, requestBody) // http.Delete yok.
 	if err != nil {
 		fmt.Printf("Error: %s", err)
 	}
