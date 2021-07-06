@@ -36,7 +36,7 @@ func Post(url string) {
 	}
 
 	data, _ := json.Marshal(myMentor)
-	requestBody := bytes.NewReader(data)
+	requestBody := bytes.NewBuffer(data)
 
 	resp, err := http.Post(url, "application/json", requestBody)
 	if err != nil {
