@@ -20,7 +20,7 @@ type Todo struct {
 	Completed bool   `json:"completed"`
 }
 
-func Post(url string) {
+func Post(url string) []byte {
 	myMentor := Mentor{
 		"Erhan",
 		"Yakut",
@@ -40,7 +40,7 @@ func Post(url string) {
 		fmt.Printf("Error: %v", err)
 	}
 
-	fmt.Printf("\nResponse of POST request: %s\n", string(body))
+	return body
 }
 
 func Get(url string) interface{} {
@@ -61,7 +61,7 @@ func Get(url string) interface{} {
 	return todo
 }
 
-func Put(url string) {
+func Put(url string) interface{} {
 	todoData := Todo{
 		5,
 		2,
@@ -90,7 +90,8 @@ func Put(url string) {
 
 	var todo Todo
 	json.Unmarshal(body, &todo)
-	fmt.Printf("\nResponse of PUT request:\n%+v\n", todo)
+
+	return todo
 }
 
 func Delete(url string) (string, string) {
