@@ -22,3 +22,17 @@ func TestDelete(t *testing.T) {
 		t.Errorf("Expected body %v, Actual body: %v", "", body)
 	}
 }
+
+func TestPut(t *testing.T)  {
+	data := Todo{
+		UserID: 10,
+		ID: 3,
+		Title: "Update data for test",
+		Completed: true,
+	}
+	result := Put("https://jsonplaceholder.typicode.com/todos/3", data)
+	if result != data {
+		t.Errorf("Expected %v, Actual %v", data, result)
+	}
+
+}

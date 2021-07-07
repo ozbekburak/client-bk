@@ -60,13 +60,7 @@ func Get(url string) interface{} {
 	return todo
 }
 
-func Put(url string) interface{} {
-	todoData := Todo{
-		5,
-		2,
-		"Update the second element of todos",
-		true,
-	}
+func Put(url string, todoData interface{}) interface{} {
 
 	client := &http.Client{}
 	data, _ := json.Marshal(todoData)
