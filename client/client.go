@@ -13,7 +13,6 @@ type Mentor struct {
 	Surname string `json:"surname"`
 }
 
-// PostData güzel bir isimlendirme değil gibi ama Post() fonksiyon ismiyle çakışıyor
 type PostData struct {
 	UserID int    `json:"userId"`
 	ID     int    `json:"id"`
@@ -32,16 +31,15 @@ func Post(url string) {
 
 	resp, err := http.Post(url, "application/json", requestBody)
 	if err != nil {
-		fmt.Printf("Error: %v", err) // log kütüphanesini kullanmak daha doğru mu olur? (log.Fatalln)
+		fmt.Printf("Error: %v", err)
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body) // byte döner (byte[]). bodyBytes daha iyi bir adlandırma mı olur?
+	body, err := ioutil.ReadAll(resp.Body) // returns byte (byte[]).
 	if err != nil {
 		fmt.Printf("Error: %v", err)
 	}
 
-	// string(body) ayrı bir değişkene atamak overkill mi best practice mi?
 	fmt.Printf("\nResponse of POST request: %s\n", string(body))
 }
 
@@ -57,8 +55,6 @@ func Get(url string) {
 		fmt.Printf("Error: %s", err)
 	}
 
-	// struct olarak göstermek için unmarshal edip postdata'yı dolduruyoruz. Mantıklı mı? yoksa direkt string(body) mi
-	// kullanmak iyi olurdu?
 	var post PostData
 	json.Unmarshal(body, &post)
 	fmt.Printf("\nResponse of GET request:\n%+v\n", post) // +v fieldları da yazıyor.
@@ -76,7 +72,7 @@ func Put(url string) {
 	data, _ := json.Marshal(postData)
 	requestBody := bytes.NewBuffer(data)
 
-	req, err := http.NewRequest(http.MethodPut, url, requestBody) // http.Put yok.
+	req, err := http.NewRequest(http.MethodPut, url, requestBody)
 	if err != nil {
 		fmt.Printf("Error: %s", err)
 	}
@@ -108,7 +104,7 @@ func Delete(url string) {
 	data, _ := json.Marshal(postData)
 	requestBody := bytes.NewBuffer(data)
 
-	req, err := http.NewRequest(http.MethodDelete, url, requestBody) // http.Delete yok.
+	req, err := http.NewRequest(http.MethodDelete, url, requestBody)
 	if err != nil {
 		fmt.Printf("Error: %s", err)
 	}
