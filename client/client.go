@@ -93,19 +93,17 @@ func Put(url string) {
 	fmt.Printf("\nResponse of PUT request:\n%+v\n", todo)
 }
 
-func Delete(url string) {
+func Delete(url string) (string, string) {
 	client := &http.Client{}
 
 	req, err := http.NewRequest(http.MethodDelete, url, nil)
 	if err != nil {
 		fmt.Printf("Error: %s", err)
-		return
 	}
 
 	resp, err := client.Do(req)
 	if err != nil {
 		fmt.Printf("Error: %s", err)
-		return
 	}
 
 	defer resp.Body.Close()
@@ -113,9 +111,8 @@ func Delete(url string) {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Printf("Error: %v", err)
-		return
 	}
 
-	fmt.Printf("\nResponse of DELETE request: \nStatus: %v\nBody: %v", resp.Status, string(body)) // 502 dönüyor, silme başarılı diyebiliriz?
+	return resp.Status, string(body)
 
 }
