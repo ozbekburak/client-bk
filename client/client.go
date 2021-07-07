@@ -57,7 +57,6 @@ func Get(url string) interface{} {
 
 	var todo Todo
 	json.Unmarshal(body, &todo)
-	//fmt.Printf("\nResponse of GET request:\n%+v\n", post) // +v fieldları da yazıyor.
 	return todo
 }
 
