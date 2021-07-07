@@ -17,7 +17,7 @@ func TestGet(t *testing.T) {
 
 func TestDelete(t *testing.T) {
 	status, body := Delete("https://jsonplaceholder.typicode.com/todos/4")
-	if status != "200 OK" && body != ""{
+	if status != 200 && body != ""{
 		t.Errorf("Expected status %v, Actual status: %v", "200 OK", status)
 		t.Errorf("Expected body %v, Actual body: %v", "", body)
 	}

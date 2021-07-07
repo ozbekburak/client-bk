@@ -57,7 +57,7 @@ func Get(url string) interface{} {
 
 	var todo Todo
 	json.Unmarshal(body, &todo)
-	
+
 	return todo
 }
 
@@ -87,7 +87,7 @@ func Put(url string, todoData interface{}) interface{} {
 	return todo
 }
 
-func Delete(url string) (string, string) {
+func Delete(url string) (int, string) {
 	client := &http.Client{}
 
 	req, err := http.NewRequest(http.MethodDelete, url, nil)
@@ -107,6 +107,6 @@ func Delete(url string) (string, string) {
 		fmt.Printf("Error: %v", err)
 	}
 
-	return resp.Status, string(body)
+	return resp.StatusCode, string(body)
 
 }
