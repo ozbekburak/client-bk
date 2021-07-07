@@ -13,11 +13,11 @@ type Mentor struct {
 	Surname string `json:"surname"`
 }
 
-type PostData struct {
-	UserID int    `json:"userId"`
-	ID     int    `json:"id"`
-	Title  string `json:"title"`
-	Body   string `json:"body"`
+type Todo struct {
+	UserID    int    `json:"userId"`
+	ID        int    `json:"id"`
+	Title     string `json:"title"`
+	Completed bool   `json:"completed"`
 }
 
 func Post(url string) {
@@ -43,7 +43,7 @@ func Post(url string) {
 	fmt.Printf("\nResponse of POST request: %s\n", string(body))
 }
 
-func Get(url string) {
+func Get(url string) interface{} {
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Printf("Error: %s", err)
@@ -55,21 +55,22 @@ func Get(url string) {
 		fmt.Printf("Error: %s", err)
 	}
 
-	var post PostData
-	json.Unmarshal(body, &post)
-	fmt.Printf("\nResponse of GET request:\n%+v\n", post) // +v fieldları da yazıyor.
+	var todo Todo
+	json.Unmarshal(body, &todo)
+	//fmt.Printf("\nResponse of GET request:\n%+v\n", post) // +v fieldları da yazıyor.
+	return todo
 }
 
 func Put(url string) {
-	postData := PostData{
+	todoData := Todo{
 		5,
 		2,
-		"Update the second element of posts",
-		"This is our new body for posts/2",
+		"Update the second element of todos",
+		true,
 	}
 
 	client := &http.Client{}
-	data, _ := json.Marshal(postData)
+	data, _ := json.Marshal(todoData)
 	requestBody := bytes.NewBuffer(data)
 
 	req, err := http.NewRequest(http.MethodPut, url, requestBody)
@@ -87,39 +88,34 @@ func Put(url string) {
 
 	body, _ := ioutil.ReadAll(resp.Body)
 
-	var post PostData
-	json.Unmarshal(body, &post)
-	fmt.Printf("\nResponse of PUT request:\n%+v\n", post)
+	var todo Todo
+	json.Unmarshal(body, &todo)
+	fmt.Printf("\nResponse of PUT request:\n%+v\n", todo)
 }
 
 func Delete(url string) {
-	postData := PostData{
-		5,
-		3,
-		"Delete the post with an id of 3",
-		"Goodbye, body.",
-	}
-
 	client := &http.Client{}
-	data, _ := json.Marshal(postData)
-	requestBody := bytes.NewBuffer(data)
 
-	req, err := http.NewRequest(http.MethodDelete, url, requestBody)
+	req, err := http.NewRequest(http.MethodDelete, url, nil)
 	if err != nil {
 		fmt.Printf("Error: %s", err)
+		return
 	}
-	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 
 	resp, err := client.Do(req)
 	if err != nil {
 		fmt.Printf("Error: %s", err)
+		return
 	}
 
 	defer resp.Body.Close()
 
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Printf("Error: %v", err)
+		return
+	}
 
-	var post PostData
-	json.Unmarshal(body, &post)
-	fmt.Printf("\nResponse of DELETE request:\n%+v\n", post)
+	fmt.Printf("\nResponse of DELETE request: \nStatus: %v\nBody: %v", resp.Status, string(body)) // 502 dönüyor, silme başarılı diyebiliriz?
+
 }

@@ -9,7 +9,7 @@ import (
 func main() {
 	fmt.Println("Burak Kaan HTTP Client")
 	client.Post("https://postman-echo.com/post")
-	client.Get("https://jsonplaceholder.typicode.com/posts/1")
-	client.Put("https://jsonplaceholder.typicode.com/posts/2")
-	client.Delete("https://jsonplaceholder.typicode.com/posts/3")
+	fmt.Printf("\nResponse of GET request:\n%+v\n", client.Get("https://jsonplaceholder.typicode.com/todos/1"))
+	client.Put("https://jsonplaceholder.typicode.com/todos/2")
+	client.Delete("https://jsonplaceholder.typicode.com/todos/3")
 }
