@@ -11,10 +11,10 @@ import (
 func main() {
 
 	todoData := client.Todo{
-		5,
-		2,
-		"Update the second element of todos",
-		true,
+		UserID:    5,
+		ID:        2,
+		Title:     "Update the second element of todos",
+		Completed: true,
 	}
 
 	fmt.Println("Burak Kaan HTTP Client")
