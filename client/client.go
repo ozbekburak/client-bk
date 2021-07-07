@@ -57,11 +57,11 @@ func Get(url string) interface{} {
 
 	var todo Todo
 	json.Unmarshal(body, &todo)
+	
 	return todo
 }
 
 func Put(url string, todoData interface{}) interface{} {
-
 	client := &http.Client{}
 	data, _ := json.Marshal(todoData)
 	requestBody := bytes.NewBuffer(data)

@@ -34,5 +34,4 @@ func TestPut(t *testing.T)  {
 	if result != data {
 		t.Errorf("Expected %v, Actual %v", data, result)
 	}
-
 }
